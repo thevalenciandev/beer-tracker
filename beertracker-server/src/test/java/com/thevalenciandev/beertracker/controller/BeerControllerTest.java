@@ -35,4 +35,13 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("type").value("IPA"))
                 .andExpect(jsonPath("abv").value(6.7));
     }
+
+    @Test
+    public void throwsExceptionUponBeerIdNotFound() throws Exception {
+        given(beerService.getBeerDetails(anyLong())).willThrow(BeerNotFoundException.class);
+
+        mockMvc.perform(get("/beer/666"))
+                .andExpect(status().isNotFound());
+
+    }
 }
