@@ -17,5 +17,6 @@ public class Beer {
     private final Long id;
     private final String name;
     private final String type; // TODO: should be an enum (LARGER, ALE, PALE ALE...)
+    private final double ABV;
 
 }
