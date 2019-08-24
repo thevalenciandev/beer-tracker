@@ -27,7 +27,7 @@ public class BeerControllerTest {
 
     @Test
     public void canRetrieveBeerById() throws Exception {
-        given(beerService.getBeerDetails(anyLong())).willReturn(new Beer(1L, "Innovation IPA", "IPA", 6.7));
+        given(beerService.getBeerDetails(anyLong())).willReturn(new Beer("Innovation IPA", "IPA", 6.7));
 
         mockMvc.perform(get("/beer/1"))
                 .andExpect(status().isOk())
