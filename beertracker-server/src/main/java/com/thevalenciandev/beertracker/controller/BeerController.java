@@ -15,7 +15,7 @@ public class BeerController {
         this.beerService = beerService;
     }
 
-    @GetMapping("beer/{id}")
+    @GetMapping("/beers/{id}")
     private Beer getBeer(@PathVariable Long id) {
         return beerService.getBeerDetails(id);
     }

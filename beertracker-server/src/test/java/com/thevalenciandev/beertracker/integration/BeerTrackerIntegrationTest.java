@@ -1,6 +1,7 @@
 package com.thevalenciandev.beertracker.integration;
 
 import com.thevalenciandev.beertracker.domain.Beer;
+import com.thevalenciandev.beertracker.repository.BeerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,27 @@ class BeerTrackerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private BeerRepository beerRepository;
+
     @Test
     void canRetrieveBeerInfoById() {
 
-        ResponseEntity<Beer> entity = restTemplate.getForEntity("/beers/1", Beer.class);
+        create(new Beer("Innovation IPA", "IPA", 6.7));
 
-        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(entity.getBody().getName()).isEqualTo("Innovation IPA");
-        assertThat(entity.getBody().getType()).isEqualTo("IPA");
+        ResponseEntity<Beer> response = get("/beers/1");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getName()).isEqualTo("Innovation IPA");
+        assertThat(response.getBody().getType()).isEqualTo("IPA");
+        assertThat(response.getBody().getABV()).isEqualTo(6.7);
+    }
+
+    private ResponseEntity<Beer> get(String url) {
+        return restTemplate.getForEntity(url, Beer.class);
+    }
+
+    private void create(Beer beer) {
+        beerRepository.save(beer);
     }
 }

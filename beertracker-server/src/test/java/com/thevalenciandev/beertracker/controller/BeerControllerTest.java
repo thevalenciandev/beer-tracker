@@ -29,7 +29,7 @@ public class BeerControllerTest {
     public void canRetrieveBeerById() throws Exception {
         given(beerService.getBeerDetails(anyLong())).willReturn(new Beer("Innovation IPA", "IPA", 6.7));
 
-        mockMvc.perform(get("/beer/1"))
+        mockMvc.perform(get("/beers/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Innovation IPA"))
                 .andExpect(jsonPath("type").value("IPA"))

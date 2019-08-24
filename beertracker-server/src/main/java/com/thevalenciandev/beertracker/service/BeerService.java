@@ -3,8 +3,11 @@ package com.thevalenciandev.beertracker.service;
 import com.thevalenciandev.beertracker.controller.BeerNotFoundException;
 import com.thevalenciandev.beertracker.domain.Beer;
 import com.thevalenciandev.beertracker.repository.BeerRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BeerService {
+
     private final BeerRepository beerRepository;
 
     public BeerService(BeerRepository beerRepository) {
