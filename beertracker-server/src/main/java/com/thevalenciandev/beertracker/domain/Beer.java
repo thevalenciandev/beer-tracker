@@ -1,22 +1,24 @@
 package com.thevalenciandev.beertracker.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Beer {
 
     @Id
     @GeneratedValue
-    private final Long id;
-    private final String name;
-    private final String type; // TODO: should be an enum (LARGER, ALE, PALE ALE...) and should go into a separate table
-    private final double ABV;
+    private Long id;
+    private String name;
+    private String type; // TODO: should be an enum (LARGER, ALE, PALE ALE...) and should go into a separate table
+    private double ABV;
 
 }
