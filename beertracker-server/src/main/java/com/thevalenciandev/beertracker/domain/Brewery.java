@@ -9,6 +9,5 @@ public class Brewery {
 
     private Long id;
     private String name;
-    private String country;
 
 }

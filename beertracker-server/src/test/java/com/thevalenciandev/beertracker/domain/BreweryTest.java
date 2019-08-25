@@ -9,10 +9,9 @@ public class BreweryTest {
     @Test
     public void canCreateABrewery() {
 
-        Brewery brewery = new Brewery(1L, "Adnams", "England");
+        Brewery brewery = new Brewery(1L, "Adnams");
 
         assertThat(brewery.getId()).isEqualTo(1L);
         assertThat(brewery.getName()).isEqualTo("Adnams");
-        assertThat(brewery.getCountry()).isEqualTo("England");
     }
 }
