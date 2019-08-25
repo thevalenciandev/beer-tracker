@@ -41,7 +41,7 @@ public class BeerTrackerIntegrationTest {
     }
 
     @Test
-    public void canRetrieveAllBeers() {
+    public void canRetrieveAllBeersInfo() {
 
         Beer beer1 = new Beer(null, "Innovation IPA", "IPA", 6.7);
         Beer beer2 = new Beer(null, "Wild Hop", "Amber", 4.8);

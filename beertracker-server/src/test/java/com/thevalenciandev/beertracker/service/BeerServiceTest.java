@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +21,7 @@ public class BeerServiceTest {
 
     @Mock
     BeerRepository beerRepository;
+
     BeerService beerService;
 
     @Before
@@ -29,13 +31,10 @@ public class BeerServiceTest {
 
     @Test
     public void canRetrieveBeerById() {
-        given(beerRepository.findById(1L)).willReturn(Optional.of(new Beer(null, "Innovation IPA", "IPA", 6.7)));
+        Beer savedBeer = new Beer(1L, "Innovation IPA", "IPA", 6.7);
+        given(beerRepository.findById(1L)).willReturn(Optional.of(savedBeer));
 
-        Beer beer = beerService.getBeerDetails(1L);
-
-        assertThat(beer.getName()).isEqualTo("Innovation IPA");
-        assertThat(beer.getType()).isEqualTo("IPA");
-        assertThat(beer.getABV()).isEqualTo(6.7);
+        assertThat(beerService.getBeerDetails(1L)).isEqualTo(savedBeer);
     }
 
     @Test
@@ -45,5 +44,15 @@ public class BeerServiceTest {
         Throwable thrown = catchThrowable(() -> beerService.getBeerDetails(666L));
 
         assertThat(thrown).isInstanceOf(BeerNotFoundException.class);
+    }
+
+    @Test
+    public void canRetrieveAllBeers() {
+        Beer[] beers = {new Beer(1L, "Innovation IPA", "IPA", 6.7),
+                        new Beer(2L, "Wild Hop", "Amber", 4.8)};
+
+        given(beerRepository.findAll()).willReturn(Arrays.asList(beers));
+
+        assertThat(beerService.getAllBeers()).containsExactlyInAnyOrder(beers);
     }
 }

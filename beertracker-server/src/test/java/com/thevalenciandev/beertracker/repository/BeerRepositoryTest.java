@@ -29,7 +29,7 @@ public class BeerRepositoryTest {
 
         Beer retrievedBeer = repository.findById(1L).get();
 
-        assertEquals(savedBeer, retrievedBeer);
+        assertThat(retrievedBeer).isEqualTo(savedBeer);
     }
 
     @Test
@@ -39,17 +39,19 @@ public class BeerRepositoryTest {
 
         Beer retrievedBeer = repository.findByName("Innovation IPA").get();
 
-        assertEquals(savedBeer, retrievedBeer);
+        assertThat(retrievedBeer).isEqualTo(savedBeer);
+    }
+
+    @Test
+    public void canRetrieveAllBeers() {
+        Beer savedBeer1 = entityManager.persistFlushFind(new Beer(null, "Innovation IPA", "IPA", 6.7));
+        Beer savedBeer2 = entityManager.persistFlushFind(new Beer(null, "Wild Hop", "Amber", 4.8));
+
+        assertThat(repository.findAll()).containsExactlyInAnyOrder(savedBeer1, savedBeer2);
     }
 
     private Beer beerOfName(String name) {
         return new Beer(null, name, "a-type", 12.3);
-    }
-
-    private void assertEquals(Beer savedBeer, Beer beer) {
-        assertThat(beer.getName()).isEqualTo(savedBeer.getName());
-        assertThat(beer.getType()).isEqualTo(savedBeer.getType());
-        assertThat(beer.getABV()).isEqualTo(savedBeer.getABV());
     }
 
 }
