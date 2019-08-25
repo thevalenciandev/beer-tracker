@@ -25,7 +25,7 @@ public class BeerRepositoryTest {
     @Test
     public void canRetrieveBeerById() {
 
-        Beer savedBeer = entityManager.persistFlushFind(new Beer("Innovation IPA", "IPA", 6.7));
+        Beer savedBeer = entityManager.persistFlushFind(new Beer(null, "Innovation IPA", "IPA", 6.7));
 
         Beer retrievedBeer = repository.findById(1L).get();
 
@@ -43,7 +43,7 @@ public class BeerRepositoryTest {
     }
 
     private Beer beerOfName(String name) {
-        return new Beer(name, "a-type", 12.3);
+        return new Beer(null, name, "a-type", 12.3);
     }
 
     private void assertEquals(Beer savedBeer, Beer beer) {

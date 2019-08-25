@@ -17,4 +17,8 @@ public class BeerService {
     public Beer getBeerDetails(long id) {
         return beerRepository.findById(id).orElseThrow(BeerNotFoundException::new);
     }
+
+    public Iterable<Beer> getAllBeers() {
+        return beerRepository.findAll();
+    }
 }

@@ -29,7 +29,7 @@ public class BeerServiceTest {
 
     @Test
     public void canRetrieveBeerById() {
-        given(beerRepository.findById(1L)).willReturn(Optional.of(new Beer("Innovation IPA", "IPA", 6.7)));
+        given(beerRepository.findById(1L)).willReturn(Optional.of(new Beer(null, "Innovation IPA", "IPA", 6.7)));
 
         Beer beer = beerService.getBeerDetails(1L);
 

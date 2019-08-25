@@ -17,6 +17,11 @@ public class BeerController {
         this.beerService = beerService;
     }
 
+    @GetMapping("")
+    private Iterable<Beer> getAllBeers() {
+        return beerService.getAllBeers();
+    }
+
     @GetMapping("/{id}")
     private Beer getBeer(@PathVariable Long id) {
         return beerService.getBeerDetails(id);
