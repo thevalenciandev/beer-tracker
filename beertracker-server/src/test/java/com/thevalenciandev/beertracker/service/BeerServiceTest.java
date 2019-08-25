@@ -49,10 +49,24 @@ public class BeerServiceTest {
     @Test
     public void canRetrieveAllBeers() {
         Beer[] beers = {new Beer(1L, "Innovation IPA", "IPA", 6.7),
-                        new Beer(2L, "Wild Hop", "Amber", 4.8)};
+                new Beer(2L, "Wild Hop", "Amber", 4.8)};
 
         given(beerRepository.findAll()).willReturn(Arrays.asList(beers));
 
         assertThat(beerService.getAllBeers()).containsExactlyInAnyOrder(beers);
+    }
+
+    @Test
+    public void canCreateNewBeers() {
+
+        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 5.2);
+
+        given(beerRepository.save(beerToCreate)).willReturn(withId(1L, beerToCreate));
+
+        assertThat(beerService.create(beerToCreate)).isEqualTo(withId(1L, beerToCreate));
+    }
+
+    private Beer withId(long id, Beer newBeer) {
+        return new Beer(id, newBeer.getName(), newBeer.getType(), newBeer.getABV());
     }
 }

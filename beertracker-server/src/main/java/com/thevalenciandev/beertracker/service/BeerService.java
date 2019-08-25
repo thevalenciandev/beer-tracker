@@ -21,4 +21,8 @@ public class BeerService {
     public Iterable<Beer> getAllBeers() {
         return beerRepository.findAll();
     }
+
+    public Beer create(Beer newBeer) {
+        return beerRepository.save(newBeer);
+    }
 }

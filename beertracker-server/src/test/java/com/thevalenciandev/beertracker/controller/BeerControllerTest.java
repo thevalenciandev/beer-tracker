@@ -1,5 +1,7 @@
 package com.thevalenciandev.beertracker.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thevalenciandev.beertracker.domain.Beer;
 import com.thevalenciandev.beertracker.service.BeerService;
 import org.junit.Test;
@@ -15,7 +17,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,10 +56,32 @@ public class BeerControllerTest {
     }
 
     @Test
+    public void canCreateNewBeers() throws Exception {
+        Beer newBeer = new Beer(null, "London Pride", "Ale", 5.2);
+
+        given(beerService.create(newBeer)).willReturn(withId(1L, newBeer));
+
+        mockMvc.perform(post("/beers/").contentType(APPLICATION_JSON).content(asJson(newBeer)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value("1"))
+                .andExpect(jsonPath("name").value("London Pride"))
+                .andExpect(jsonPath("type").value("Ale"))
+                .andExpect(jsonPath("abv").value(5.2));
+    }
+
+    private String asJson(Beer newBeer) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(newBeer);
+    }
+
+    private Beer withId(long id, Beer newBeer) {
+        return new Beer(id, newBeer.getName(), newBeer.getType(), newBeer.getABV());
+    }
+
+    @Test
     public void throwsExceptionUponBeerIdNotFound() throws Exception {
         given(beerService.getBeerDetails(anyLong())).willThrow(BeerNotFoundException.class);
 
-        mockMvc.perform(get("/beer/666"))
+        mockMvc.perform(get("/beers/666"))
                 .andExpect(status().isNotFound());
 
     }

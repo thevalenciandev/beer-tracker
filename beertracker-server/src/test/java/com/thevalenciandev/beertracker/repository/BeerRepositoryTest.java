@@ -50,6 +50,20 @@ public class BeerRepositoryTest {
         assertThat(repository.findAll()).containsExactlyInAnyOrder(savedBeer1, savedBeer2);
     }
 
+    @Test
+    public void canCreateNewBeers() {
+        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 5.2);
+
+        Beer createdBeer = repository.save(beerToCreate);
+
+        assertThat(createdBeer.getId()).isGreaterThan(0);
+        assertThat(createdBeer).isEqualToIgnoringGivenFields(beerToCreate, "id");
+    }
+
+    private Beer withId(long id, Beer beerToCreate) {
+        return new Beer(id, beerToCreate.getName(), beerToCreate.getType(), beerToCreate.getABV());
+    }
+
     private Beer beerOfName(String name) {
         return new Beer(null, name, "a-type", 12.3);
     }
