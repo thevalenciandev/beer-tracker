@@ -59,7 +59,7 @@ public class BeerServiceTest {
     @Test
     public void canCreateNewBeers() {
 
-        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 5.2);
+        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 4.7);
 
         given(beerRepository.save(beerToCreate)).willReturn(withId(1L, beerToCreate));
 

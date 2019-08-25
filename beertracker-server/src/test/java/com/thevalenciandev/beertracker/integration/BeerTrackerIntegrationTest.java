@@ -58,7 +58,7 @@ public class BeerTrackerIntegrationTest {
     @Test
     public void canCreateNewBeers() {
 
-        Beer newBeer = new Beer(null, "London Pride", "Ale", 5.2);
+        Beer newBeer = new Beer(null, "London Pride", "Ale", 4.7);
 
         post(newBeer, "/beers");
 

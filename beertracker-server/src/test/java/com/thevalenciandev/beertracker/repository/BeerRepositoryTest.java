@@ -52,7 +52,7 @@ public class BeerRepositoryTest {
 
     @Test
     public void canCreateNewBeers() {
-        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 5.2);
+        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 4.7);
 
         Beer createdBeer = repository.save(beerToCreate);
 

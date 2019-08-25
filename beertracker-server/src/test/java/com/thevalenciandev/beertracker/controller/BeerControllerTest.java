@@ -57,7 +57,7 @@ public class BeerControllerTest {
 
     @Test
     public void canCreateNewBeers() throws Exception {
-        Beer newBeer = new Beer(null, "London Pride", "Ale", 5.2);
+        Beer newBeer = new Beer(null, "London Pride", "Ale", 4.7);
 
         given(beerService.create(newBeer)).willReturn(withId(1L, newBeer));
 
@@ -66,7 +66,7 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("name").value("London Pride"))
                 .andExpect(jsonPath("type").value("Ale"))
-                .andExpect(jsonPath("abv").value(5.2));
+                .andExpect(jsonPath("abv").value(4.7));
     }
 
     private String asJson(Beer newBeer) throws JsonProcessingException {
