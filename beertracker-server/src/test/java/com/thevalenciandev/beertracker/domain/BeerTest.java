@@ -12,7 +12,7 @@ public class BeerTest {
 
         assertThat(beer.getId()).isEqualTo(1L);
         assertThat(beer.getName()).isEqualTo("Innovation IPA");
-        assertThat(beer.getType()).isEqualTo("IPA");
+        assertThat(beer.getStyle()).isEqualTo("IPA");
         assertThat(beer.getABV()).isEqualTo(6.7);
     }
 }

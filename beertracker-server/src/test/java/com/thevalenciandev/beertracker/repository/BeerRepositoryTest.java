@@ -61,11 +61,11 @@ public class BeerRepositoryTest {
     }
 
     private Beer withId(long id, Beer beerToCreate) {
-        return new Beer(id, beerToCreate.getName(), beerToCreate.getType(), beerToCreate.getABV());
+        return new Beer(id, beerToCreate.getName(), beerToCreate.getStyle(), beerToCreate.getABV());
     }
 
     private Beer beerOfName(String name) {
-        return new Beer(null, name, "a-type", 12.3);
+        return new Beer(null, name, "a-style", 12.3);
     }
 
 }

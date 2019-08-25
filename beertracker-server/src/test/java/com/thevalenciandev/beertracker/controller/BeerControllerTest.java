@@ -40,7 +40,7 @@ public class BeerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("name").value("Innovation IPA"))
-                .andExpect(jsonPath("type").value("IPA"))
+                .andExpect(jsonPath("style").value("IPA"))
                 .andExpect(jsonPath("abv").value(6.7));
     }
 
@@ -65,7 +65,7 @@ public class BeerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("name").value("London Pride"))
-                .andExpect(jsonPath("type").value("Ale"))
+                .andExpect(jsonPath("style").value("Ale"))
                 .andExpect(jsonPath("abv").value(4.7));
     }
 
@@ -74,7 +74,7 @@ public class BeerControllerTest {
     }
 
     private Beer withId(long id, Beer newBeer) {
-        return new Beer(id, newBeer.getName(), newBeer.getType(), newBeer.getABV());
+        return new Beer(id, newBeer.getName(), newBeer.getStyle(), newBeer.getABV());
     }
 
     @Test

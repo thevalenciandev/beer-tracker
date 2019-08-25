@@ -18,7 +18,7 @@ public class Beer {
     @GeneratedValue
     private Long id;
     private String name;
-    private String type; // TODO: should be an enum (LARGER, ALE, PALE ALE...) and should go into a separate table
+    private String style; // TODO: should be an enum (LARGER, ALE, PALE ALE...) and should go into a separate table
     private double ABV;
 
 }

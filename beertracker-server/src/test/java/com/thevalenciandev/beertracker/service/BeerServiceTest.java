@@ -67,6 +67,6 @@ public class BeerServiceTest {
     }
 
     private Beer withId(long id, Beer newBeer) {
-        return new Beer(id, newBeer.getName(), newBeer.getType(), newBeer.getABV());
+        return new Beer(id, newBeer.getName(), newBeer.getStyle(), newBeer.getABV());
     }
 }
