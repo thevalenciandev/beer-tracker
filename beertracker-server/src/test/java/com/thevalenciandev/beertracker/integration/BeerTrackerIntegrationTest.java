@@ -60,12 +60,16 @@ public class BeerTrackerIntegrationTest {
 
         Beer newBeer = new Beer(null, "London Pride", "Ale", 5.2);
 
-        restTemplate.postForEntity("/beers", newBeer, Beer.class);
+        post(newBeer, "/beers");
 
         ResponseEntity<Beer> response = get("/beers/1");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getId()).isGreaterThan(0L);
         assertThat(response.getBody()).isEqualToIgnoringGivenFields(newBeer, "id");
+    }
+
+    private ResponseEntity<Beer> post(Beer newBeer, String url) {
+        return restTemplate.postForEntity(url, newBeer, Beer.class);
     }
 
     private ResponseEntity<Iterable<Beer>> getAll(String url) {
