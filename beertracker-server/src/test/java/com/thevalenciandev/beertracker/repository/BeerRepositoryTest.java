@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // clean DB after each test
+@RunWith(SpringRunner.class)
 public class BeerRepositoryTest {
 
     @Autowired
