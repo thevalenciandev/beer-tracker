@@ -49,12 +49,15 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("name").value("Innovation IPA"))
                 .andExpect(jsonPath("style").value("IPA"))
-                .andExpect(jsonPath("abv").value(6.7));
+                .andExpect(jsonPath("abv").value(6.7))
+                .andExpect(jsonPath("_links.self.href").value("http://localhost/beers/1"))
+                .andExpect(jsonPath("_links.beers.href").value("http://localhost/beers"));
     }
 
     @Test
     public void canRetrieveAllBeers() throws Exception {
-        given(beerService.getAllBeers()).willReturn(asList(aBeerNamed("beer-1"), aBeerNamed("beer-2")));
+        given(beerService.getAllBeers()).willReturn(asList(Beer.builder().id(1L).name("beer-1").build(),
+                                                           Beer.builder().id(2L).name("beer-2").build()));
 
         mockMvc.perform(get("/beers").accept(HAL_JSON_VALUE))
                 .andDo(print())
@@ -62,7 +65,10 @@ public class BeerControllerTest {
                 .andExpect(header().string(CONTENT_TYPE, HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("_embedded.beers", hasSize(equalTo(2))))
                 .andExpect(jsonPath("_embedded.beers[0].name", equalTo("beer-1")))
-                .andExpect(jsonPath("_embedded.beers[1].name", equalTo("beer-2")));
+                .andExpect(jsonPath("_embedded.beers[0]._links.self.href").value("http://localhost/beers/1"))
+                .andExpect(jsonPath("_embedded.beers[1].name", equalTo("beer-2")))
+                .andExpect(jsonPath("_embedded.beers[1]._links.self.href").value("http://localhost/beers/2"))
+                .andExpect(jsonPath("_links.self.href").value("http://localhost/beers"));
     }
 
     @Test
@@ -98,9 +104,4 @@ public class BeerControllerTest {
 
     }
 
-    private Beer aBeerNamed(String name) {
-        Beer beer = new Beer();
-        beer.setName(name);
-        return beer;
-    }
 }
