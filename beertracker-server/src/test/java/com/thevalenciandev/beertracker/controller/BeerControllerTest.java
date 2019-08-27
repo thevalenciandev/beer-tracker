@@ -81,10 +81,12 @@ public class BeerControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string(CONTENT_TYPE, HAL_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("id").value("1"))
                 .andExpect(jsonPath("name").value("London Pride"))
                 .andExpect(jsonPath("style").value("Ale"))
-                .andExpect(jsonPath("abv").value(4.7));
+                .andExpect(jsonPath("abv").value(4.7))
+                .andExpect(jsonPath("_links.self.href").value("http://localhost/beers/1"))
+                .andExpect(jsonPath("_links.beers.href").value("http://localhost/beers"));
+
     }
 
     private String asJson(Beer newBeer) throws JsonProcessingException {
