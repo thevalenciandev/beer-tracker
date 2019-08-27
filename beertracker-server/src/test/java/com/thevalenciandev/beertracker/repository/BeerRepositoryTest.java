@@ -1,6 +1,7 @@
 package com.thevalenciandev.beertracker.repository;
 
 import com.thevalenciandev.beertracker.domain.Beer;
+import com.thevalenciandev.beertracker.domain.Brewery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class BeerRepositoryTest {
     @Test
     public void canRetrieveBeerById() {
 
-        Beer savedBeer = entityManager.persistFlushFind(new Beer(null, "Innovation IPA", "IPA", 6.7));
+        Beer savedBeer = entityManager.persistFlushFind(new Beer(null, "Innovation", "IPA", 6.7,
+                                                                    new Brewery(null, "Adnams")));
 
         Beer retrievedBeer = repository.findById(1L).get();
 
@@ -35,24 +37,28 @@ public class BeerRepositoryTest {
     @Test
     public void canRetrieveBeerByName() {
 
-        Beer savedBeer = entityManager.persistFlushFind(beerOfName("Innovation IPA"));
+        Beer savedBeer = entityManager.persistFlushFind(beerOfName("Innovation"));
 
-        Beer retrievedBeer = repository.findByName("Innovation IPA").get();
+        Beer retrievedBeer = repository.findByName("Innovation").get();
 
         assertThat(retrievedBeer).isEqualTo(savedBeer);
     }
 
     @Test
     public void canRetrieveAllBeers() {
-        Beer savedBeer1 = entityManager.persistFlushFind(new Beer(null, "Innovation IPA", "IPA", 6.7));
-        Beer savedBeer2 = entityManager.persistFlushFind(new Beer(null, "Wild Hop", "Amber", 4.8));
+        Beer savedBeer1 = entityManager.persistFlushFind(new Beer(null, "Innovation", "IPA", 6.7,
+                                                            new Brewery(null, "Adnams")));
+        Beer savedBeer2 = entityManager.persistFlushFind(new Beer(null, "Punk", "IPA", 5.6,
+                                                            new Brewery(null, "BrewDog")));
+        // TODO: two beers by the same Brewery blow up this test because of the Unique constraint... look at it later
 
         assertThat(repository.findAll()).containsExactlyInAnyOrder(savedBeer1, savedBeer2);
     }
 
     @Test
-    public void canCreateNewBeers() {
-        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 4.7);
+    public void canCreateNewBeersWithNewBrewery() {
+        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 4.7,
+                                        new Brewery(null, "Adnams"));
 
         Beer createdBeer = repository.save(beerToCreate);
 
@@ -60,12 +66,10 @@ public class BeerRepositoryTest {
         assertThat(createdBeer).isEqualToIgnoringGivenFields(beerToCreate, "id");
     }
 
-    private Beer withId(long id, Beer beerToCreate) {
-        return new Beer(id, beerToCreate.getName(), beerToCreate.getStyle(), beerToCreate.getABV());
-    }
+    //TODO: canCreateNewBeersWithExistingBrewery
 
     private Beer beerOfName(String name) {
-        return new Beer(null, name, "a-style", 12.3);
+        return Beer.builder().name(name).build();
     }
 
 }

@@ -3,6 +3,7 @@ package com.thevalenciandev.beertracker.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thevalenciandev.beertracker.domain.Beer;
+import com.thevalenciandev.beertracker.domain.Brewery;
 import com.thevalenciandev.beertracker.service.BeerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +41,7 @@ public class BeerControllerTest {
 
     @Test
     public void canRetrieveBeerById() throws Exception {
-        given(beerService.getBeerDetails(anyLong())).willReturn(new Beer(1L, "Innovation IPA", "IPA", 6.7));
+        given(beerService.getBeerDetails(anyLong())).willReturn(new Beer(1L, "Innovation IPA", "IPA", 6.7, new Brewery(1L, "Adnams")));
 
         mockMvc.perform(get("/beers/1").accept(HAL_JSON_VALUE))
                 .andDo(print())
@@ -50,6 +51,8 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("name").value("Innovation IPA"))
                 .andExpect(jsonPath("style").value("IPA"))
                 .andExpect(jsonPath("abv").value(6.7))
+                .andExpect(jsonPath("brewery.id").value(1))
+                .andExpect(jsonPath("brewery.name").value("Adnams"))
                 .andExpect(jsonPath("_links.self.href").value("http://localhost/beers/1"))
                 .andExpect(jsonPath("_links.beers.href").value("http://localhost/beers"));
     }
@@ -73,7 +76,7 @@ public class BeerControllerTest {
 
     @Test
     public void canCreateNewBeers() throws Exception {
-        Beer newBeer = new Beer(null, "London Pride", "Ale", 4.7);
+        Beer newBeer = new Beer(null, "London Pride", "Ale", 4.7, new Brewery(null, "Adnams"));
 
         given(beerService.create(newBeer)).willReturn(withId(1L, newBeer));
 
@@ -84,6 +87,8 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("name").value("London Pride"))
                 .andExpect(jsonPath("style").value("Ale"))
                 .andExpect(jsonPath("abv").value(4.7))
+                .andExpect(jsonPath("brewery.id").value(1))
+                .andExpect(jsonPath("brewery.name").value("Adnams"))
                 .andExpect(jsonPath("_links.self.href").value("http://localhost/beers/1"))
                 .andExpect(jsonPath("_links.beers.href").value("http://localhost/beers"));
 
@@ -94,7 +99,7 @@ public class BeerControllerTest {
     }
 
     private Beer withId(long id, Beer newBeer) {
-        return new Beer(id, newBeer.getName(), newBeer.getStyle(), newBeer.getABV());
+        return new Beer(id, newBeer.getName(), newBeer.getStyle(), newBeer.getABV(), new Brewery(id, newBeer.getBrewery().getName()));
     }
 
     @Test

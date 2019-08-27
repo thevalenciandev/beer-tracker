@@ -2,6 +2,7 @@ package com.thevalenciandev.beertracker.service;
 
 import com.thevalenciandev.beertracker.controller.BeerNotFoundException;
 import com.thevalenciandev.beertracker.domain.Beer;
+import com.thevalenciandev.beertracker.domain.Brewery;
 import com.thevalenciandev.beertracker.repository.BeerRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class BeerServiceTest {
 
     @Test
     public void canRetrieveBeerById() {
-        Beer savedBeer = new Beer(1L, "Innovation IPA", "IPA", 6.7);
+        Beer savedBeer = new Beer(1L, "Innovation IPA", "IPA", 6.7, new Brewery(1L, "Adnams"));
         given(beerRepository.findById(1L)).willReturn(Optional.of(savedBeer));
 
         assertThat(beerService.getBeerDetails(1L)).isEqualTo(savedBeer);
@@ -48,8 +49,8 @@ public class BeerServiceTest {
 
     @Test
     public void canRetrieveAllBeers() {
-        Beer[] beers = {new Beer(1L, "Innovation IPA", "IPA", 6.7),
-                new Beer(2L, "Wild Hop", "Amber", 4.8)};
+        Beer[] beers = {new Beer(1L, "Innovation IPA", "IPA", 6.7, new Brewery(1L, "Adnams")),
+                new Beer(2L, "Wild Hop", "Amber", 4.8, new Brewery(1L, "Adnams"))};
 
         given(beerRepository.findAll()).willReturn(Arrays.asList(beers));
 
@@ -59,7 +60,7 @@ public class BeerServiceTest {
     @Test
     public void canCreateNewBeers() {
 
-        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 4.7);
+        Beer beerToCreate = new Beer(null, "London Pride", "Ale", 4.7, new Brewery(1L, "Adnams"));
 
         given(beerRepository.save(beerToCreate)).willReturn(withId(1L, beerToCreate));
 
@@ -67,6 +68,6 @@ public class BeerServiceTest {
     }
 
     private Beer withId(long id, Beer newBeer) {
-        return new Beer(id, newBeer.getName(), newBeer.getStyle(), newBeer.getABV());
+        return new Beer(id, newBeer.getName(), newBeer.getStyle(), newBeer.getABV(), new Brewery(id, newBeer.getBrewery().getName()));
     }
 }
