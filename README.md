@@ -4,6 +4,7 @@ A simple RESTful API of beers and breweries.
 
 1. GET http://localhost:8080/
 
+```
 {
   "_links": {
     "beers": {
@@ -17,9 +18,11 @@ A simple RESTful API of beers and breweries.
     }
   }
 }
+```
 
 2. PUT http://localhost:8080/beers
 
+```
 {
     "name": "Punk",
     "style": "IPA",
@@ -28,9 +31,11 @@ A simple RESTful API of beers and breweries.
     	"name": "BrewDog"
     }
 }
+```
 
 => 
 
+```
 {
   "name": "Punk",
   "style": "IPA",
@@ -47,9 +52,11 @@ A simple RESTful API of beers and breweries.
     }
   }
 }
+```
 
 3. GET http://localhost:8080/beers/1
 
+```
 {
   "name": "Punk",
   "style": "IPA",
@@ -66,9 +73,11 @@ A simple RESTful API of beers and breweries.
     }
   }
 }
+```
 
 4. GET http://localhost:8080/beers/1/brewery
 
+```
 {
   "name": "BrewDog",
   "_links": {
@@ -80,3 +89,4 @@ A simple RESTful API of beers and breweries.
     }
   }
 }
+```
