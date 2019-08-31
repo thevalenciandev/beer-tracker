@@ -1,2 +1,2 @@
 # beer-tracker
-A simple repository of beers drunk, and their ratings
+A simple RESTful API of beers and breweries
