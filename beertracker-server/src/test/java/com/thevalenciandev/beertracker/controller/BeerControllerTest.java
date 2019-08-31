@@ -54,13 +54,14 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("brewery.id").value(1))
                 .andExpect(jsonPath("brewery.name").value("Adnams"))
                 .andExpect(jsonPath("_links.self.href").value("http://localhost/beers/1"))
+                .andExpect(jsonPath("_links.brewery.href").value("http://localhost/beers/1/brewery"))
                 .andExpect(jsonPath("_links.beers.href").value("http://localhost/beers"));
     }
 
     @Test
     public void canRetrieveAllBeers() throws Exception {
-        given(beerService.getAllBeers()).willReturn(asList(Beer.builder().id(1L).name("beer-1").build(),
-                                                           Beer.builder().id(2L).name("beer-2").build()));
+        given(beerService.getAllBeers()).willReturn(asList(Beer.builder().id(1L).name("beer-1").brewery(new Brewery(1L, null)).build(),
+                                                           Beer.builder().id(2L).name("beer-2").brewery(new Brewery(1L, null)).build()));
 
         mockMvc.perform(get("/beers").accept(HAL_JSON_VALUE))
                 .andDo(print())
@@ -69,8 +70,10 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("_embedded.beers", hasSize(equalTo(2))))
                 .andExpect(jsonPath("_embedded.beers[0].name", equalTo("beer-1")))
                 .andExpect(jsonPath("_embedded.beers[0]._links.self.href").value("http://localhost/beers/1"))
+                .andExpect(jsonPath("_embedded.beers[0]._links.brewery.href").value("http://localhost/beers/1/brewery"))
                 .andExpect(jsonPath("_embedded.beers[1].name", equalTo("beer-2")))
                 .andExpect(jsonPath("_embedded.beers[1]._links.self.href").value("http://localhost/beers/2"))
+                .andExpect(jsonPath("_embedded.beers[1]._links.brewery.href").value("http://localhost/beers/2/brewery"))
                 .andExpect(jsonPath("_links.self.href").value("http://localhost/beers"));
     }
 
@@ -90,6 +93,7 @@ public class BeerControllerTest {
                 .andExpect(jsonPath("brewery.id").value(1))
                 .andExpect(jsonPath("brewery.name").value("Adnams"))
                 .andExpect(jsonPath("_links.self.href").value("http://localhost/beers/1"))
+                .andExpect(jsonPath("_links.brewery.href").value("http://localhost/beers/1/brewery"))
                 .andExpect(jsonPath("_links.beers.href").value("http://localhost/beers"));
 
     }
