@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
@@ -22,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = {BreweryController.class, BeerController.class})
 @RunWith(SpringRunner.class)
-@Import(BeerResourceAssembler.class)
+@Import({BeerResourceAssembler.class, BreweryResourceAssembler.class})
 public class BreweryControllerTest {
 
     @Autowired
@@ -45,8 +48,25 @@ public class BreweryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(header().string(CONTENT_TYPE, HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("name").value("BrewDog"))
-                .andExpect(jsonPath("_links.self.href").value("http://localhost/breweries/1"));
-//                .andExpect(jsonPath("_links.breweries.href").value("http://localhost/breweries"));
+                .andExpect(jsonPath("_links.self.href").value("http://localhost/breweries/1"))
+                .andExpect(jsonPath("_links.breweries.href").value("http://localhost/breweries"));
+    }
+
+    @Test
+    public void canRetrieveAllBreweries() throws Exception {
+
+        given(breweryService.getAllBreweries()).willReturn(asList(new Brewery(1L, "brewery-1"), new Brewery(2L, "brewery-2")));
+
+        mockMvc.perform(get("/breweries").accept(HAL_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(header().string(CONTENT_TYPE, HAL_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("_embedded.breweries", hasSize(equalTo(2))))
+                .andExpect(jsonPath("_embedded.breweries[0].name", equalTo("brewery-1")))
+                .andExpect(jsonPath("_embedded.breweries[0]._links.self.href").value("http://localhost/breweries/1"))
+                .andExpect(jsonPath("_embedded.breweries[1].name", equalTo("brewery-2")))
+                .andExpect(jsonPath("_embedded.breweries[1]._links.self.href").value("http://localhost/breweries/2"))
+                .andExpect(jsonPath("_links.self.href").value("http://localhost/breweries"));
     }
 
 }
