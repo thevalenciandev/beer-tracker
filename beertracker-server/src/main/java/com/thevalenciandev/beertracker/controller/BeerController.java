@@ -36,7 +36,7 @@ public class BeerController {
     }
 
     @GetMapping("/{id}")
-    Resource<Beer> getBeer(@PathVariable Long id) {
+    Resource<Beer> findOne(@PathVariable Long id) {
 
         Beer beer = beerService.getBeerDetails(id);
 
