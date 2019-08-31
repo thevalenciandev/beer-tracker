@@ -79,7 +79,6 @@ public class BeerTrackerIntegrationTest {
         assertThat(body.getContent().getName()).isEqualTo(beer.getName());
         assertThat(body.getContent().getStyle()).isEqualTo(beer.getStyle());
         assertThat(body.getContent().getABV()).isEqualTo(beer.getABV());
-        assertThat(body.getContent().getBrewery().getName()).isEqualTo(beer.getBrewery().getName());
     }
 
     private ResponseEntity<Resource> post(Beer newBeer, String url) {
