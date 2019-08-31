@@ -1,6 +1,7 @@
 # beer-tracker
 A simple RESTful API of beers and breweries.
 
+[![Build Status](https://travis-ci.org/thevalenciandev/beer-tracker.png?branch=master)](https://travis-ci.org/thevalenciandev/{beer-tracker})
 
 1. GET http://localhost:8080/
 
