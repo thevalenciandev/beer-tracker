@@ -16,6 +16,6 @@ public class BeerResourceAssembler implements ResourceAssembler<Beer, Resource<B
 
         return new Resource<>(beer,
                 linkTo(methodOn(BeerController.class).findOne(beer.getId())).withSelfRel(),
-                linkTo(methodOn(BeerController.class).getAllBeers()).withRel("beers"));
+                linkTo(methodOn(BeerController.class).findAll()).withRel("beers"));
     }
 }

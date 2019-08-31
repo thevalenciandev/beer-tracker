@@ -26,13 +26,13 @@ public class BeerController {
     }
 
     @GetMapping
-    Resources<Resource<Beer>> getAllBeers() {
+    Resources<Resource<Beer>> findAll() {
 
         List<Resource<Beer>> beerList = stream(beerService.getAllBeers().spliterator(), false)
                 .map(resourceAssembler::toResource)
                 .collect(toList());
 
-        return new Resources<>(beerList, linkTo(methodOn(BeerController.class).getAllBeers()).withSelfRel());
+        return new Resources<>(beerList, linkTo(methodOn(BeerController.class).findAll()).withSelfRel());
     }
 
     @GetMapping("/{id}")
