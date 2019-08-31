@@ -28,8 +28,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(BeerController.class)
+@RunWith(SpringRunner.class)
 @Import({BeerResourceAssembler.class}) // @Configuration classes are ignored by the @WebMvcTest annotation
 //TODO: do I want to combine both Integration test and this one?
 public class BeerControllerTest {

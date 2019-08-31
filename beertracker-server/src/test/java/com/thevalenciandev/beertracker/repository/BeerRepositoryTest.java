@@ -11,9 +11,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 @DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // clean DB after each test
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD) // clean DB after each test
 @RunWith(SpringRunner.class)
 public class BeerRepositoryTest {
 
@@ -26,8 +27,8 @@ public class BeerRepositoryTest {
     @Test
     public void canRetrieveBeerById() {
 
-        Beer savedBeer = entityManager.persistFlushFind(new Beer(null, "Innovation", "IPA", 6.7,
-                                                                    new Brewery(null, "Adnams")));
+        Beer savedBeer = populateDbWith(new Beer(null, "Innovation", "IPA", 6.7,
+                                                            new Brewery(null, "Adnams")));
 
         Beer retrievedBeer = repository.findById(1L).get();
 
@@ -37,7 +38,7 @@ public class BeerRepositoryTest {
     @Test
     public void canRetrieveBeerByName() {
 
-        Beer savedBeer = entityManager.persistFlushFind(beerOfName("Innovation"));
+        Beer savedBeer = populateDbWith(beerOfName("Innovation"));
 
         Beer retrievedBeer = repository.findByName("Innovation").get();
 
@@ -46,9 +47,9 @@ public class BeerRepositoryTest {
 
     @Test
     public void canRetrieveAllBeers() {
-        Beer savedBeer1 = entityManager.persistFlushFind(new Beer(null, "Innovation", "IPA", 6.7,
+        Beer savedBeer1 = populateDbWith(new Beer(null, "Innovation", "IPA", 6.7,
                                                             new Brewery(null, "Adnams")));
-        Beer savedBeer2 = entityManager.persistFlushFind(new Beer(null, "Punk", "IPA", 5.6,
+        Beer savedBeer2 = populateDbWith(new Beer(null, "Punk", "IPA", 5.6,
                                                             new Brewery(null, "BrewDog")));
         // TODO: two beers by the same Brewery blow up this test because of the Unique constraint... look at it later
 
@@ -67,6 +68,10 @@ public class BeerRepositoryTest {
     }
 
     //TODO: canCreateNewBeersWithExistingBrewery
+
+    private Beer populateDbWith(Beer beer) {
+        return entityManager.persistFlushFind(beer);
+    }
 
     private Beer beerOfName(String name) {
         return Beer.builder().name(name).build();
